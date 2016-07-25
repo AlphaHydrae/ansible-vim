@@ -1,0 +1,13 @@
+---
+
+# Yum
+- name: yum install vim
+  yum: pkg=vim state=latest
+  when: ansible_pkg_mgr == 'yum'
+
+# Homebrew
+- name: brew install vim
+  homebrew: name=vim state=installed
+  become: true
+  become_user: "{{ vim_user }}"
+  when: ansible_pkg_mgr == 'homebrew'
