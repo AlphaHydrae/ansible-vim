@@ -1,13 +1,17 @@
 ---
 
+# Homebrew
+- name: Install Vim (Homebrew)
+  homebrew: name=vim state=present
+  become: true
+  become_user: "{{ vim_homebrew_user }}"
+  when: ansible_pkg_mgr == 'homebrew'
+
 # Yum
-- name: yum install vim
-  yum: pkg=vim state=latest
+- name: Install Vim (Yum)
+  yum: pkg=vim state=present
   when: ansible_pkg_mgr == 'yum'
 
-# Homebrew
-- name: brew install vim
-  homebrew: name=vim state=installed
-  become: true
-  become_user: "{{ vim_user }}"
-  when: ansible_pkg_mgr == 'homebrew'
+# Other package managers
+- fail: msg="{{ ansible_pkg_mgr }} is not a supported package manager (Homebrew or Yum are supported)"
+  when: ansible_pkg_mgr != 'yum' and ansible_pkg_mgr != 'homebrew'
